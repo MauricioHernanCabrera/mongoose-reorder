@@ -9,10 +9,9 @@ async function reorder(ids, options) {
 
   const uniquesIds = [...new Set(ids)];
 
-  const [docs, _] = await Promise.all([
-    Promise.all(uniquesIds.map((_id) => this.findOne({ _id }))),
-    this.updateMany({}, { [options.key]: 99999 }),
-  ]);
+  await this.updateMany({}, { [options.key]: 99999 });
+
+  const docs = await Promise.all(uniquesIds.map((_id) => this.findOne({ _id })));
 
   await Promise.all(
     docs.map((doc, index) => {
